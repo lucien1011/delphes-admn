@@ -49,13 +49,13 @@ for i_epoch in range(cfg.n_epoch):
     x_train = numpy.asarray(x_train).astype('float32')
     condition_train = df_condition.iloc[idx_train].to_numpy()
     condition_train = numpy.asarray(condition_train).astype('float32')
-
     with tf.GradientTape() as tape:
         inputs = model(condition_train)
         
         ll = tf.math.abs(tf.math.log(model.calculate_loss(inputs,x_train)))
         ll = tf.reduce_mean(ll)
     grad = tape.gradient(ll,model.trainable_weights)
+    grad = tf.clip_by_value(grad, clip_value_min=cfg.clip_value_min, clip_value_max=cfg.clip_value_max)
     optimizer.apply_gradients(zip(grad,model.trainable_weights))
     batch_trainer.add_loss("ll",ll)
     batch_trainer.add_epoch()
