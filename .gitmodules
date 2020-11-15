@@ -4,3 +4,6 @@
 [submodule "SLURMWorker"]
 	path = SLURMWorker
 	url = git@github.com:lucien1011/SLURMWorker.git
+[submodule "PyUtilities"]
+	path = PyUtilities
+	url = git@github.com:lucien1011/PyUtilities.git
