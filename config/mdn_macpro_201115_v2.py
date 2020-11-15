@@ -25,6 +25,8 @@ cfg = Config("mygan",
         beta_1=0.9, 
         beta_2=0.99, 
         epsilon = 1E-9,
+        clip_value_min = -1.,
+        clip_value_max = -1.,
 
         saved_model_path = "output/mdn_macpro_20115_v2/saved_model",
         )

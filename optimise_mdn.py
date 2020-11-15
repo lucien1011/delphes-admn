@@ -42,7 +42,6 @@ model = MDN(df_condition.shape[1],cfg.ndf,df_x.shape[1])
 
 # __________________________________________________________________________________________ ||
 batch_trainer = MiniBatchTrainer()
-#optimizer = tf.keras.optimizers.Adam(cfg.learning_rate,cfg.beta_1,cfg.beta_2,cfg.epsilon,)
 optimizer = tf.keras.optimizers.Adam(cfg.learning_rate,cfg.beta_1,cfg.beta_2,cfg.epsilon,)
 for i_epoch in range(cfg.n_epoch): 
     idx_train = numpy.random.randint(0, df_x.shape[0], cfg.batch_size)
