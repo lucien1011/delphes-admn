@@ -51,16 +51,16 @@ for i_epoch in range(cfg.n_epoch):
     condition_train = numpy.asarray(condition_train).astype('float32')
     with tf.GradientTape() as tape:
         inputs = model(condition_train)
-        
         ll = tf.math.abs(tf.math.log(model.calculate_loss(inputs,x_train)))
         ll = tf.reduce_mean(ll)
     grad = tape.gradient(ll,model.trainable_weights)
-    grad = tf.clip_by_value(grad, clip_value_min=cfg.clip_value_min, clip_value_max=cfg.clip_value_max)
+    grad = [tf.clip_by_value(g, clip_value_min=cfg.clip_value_min, clip_value_max=cfg.clip_value_max) for g in grad]
     optimizer.apply_gradients(zip(grad,model.trainable_weights))
     batch_trainer.add_loss("ll",ll)
     batch_trainer.add_epoch()
     batch_trainer.print_loss(cfg.print_per_point)
     batch_trainer.make_history_plot(os.path.join(cfg.output_path,"loss.png"),log_scale=True,)
+    if i_epoch % 100 == 0: model.save(cfg.output_path+cfg.saved_model_name+"_"+str(i_epoch))
 
 batch_trainer.save_history(os.path.join(cfg.output_path,"history.p"),)
 model.save(cfg.output_path+cfg.saved_model_name)
